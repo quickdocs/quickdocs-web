@@ -1,9 +1,10 @@
 server {
-  listen 80;
-  server_name quickdocs.org;
+  listen ${NGINX_PORT};
+  server_name ${WEB_HOST};
 
   location ~ /badge/ {
-    rewrite ^ https://api.quickdocs.org$request_uri?;
+    proxy_pass https://${API_HOST};
+    proxy_set_header Host ${API_HOST};
   }
   location = /bye {
     rewrite ^ /;
