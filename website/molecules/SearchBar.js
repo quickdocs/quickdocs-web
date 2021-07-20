@@ -14,7 +14,7 @@ const SearchBar = ({ keyword, ...props }) => {
   const handleChange = (event) => setQuery(event.target.value)
   const handleSubmit = (event) => {
     event.preventDefault()
-    router.push(query ? `/search?q=${encodeURIComponent(query)}` : '/search')
+    router.push(query ? `/-/search?q=${encodeURIComponent(query)}` : '/-/search')
   }
 
   return (

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { useRouter } from "next/router"
 import { Heading, Box, Flex, Text, Link } from '@chakra-ui/react'
-import DefaultLayout from '../layouts/DefaultLayout'
+import DefaultLayout from '../../layouts/DefaultLayout'
 
 const Container = (props) => <Box my={5} {...props} />
 
@@ -13,11 +13,11 @@ const ProjectName = ({ children }) => (
 )
 
 const Version = ({ children }) => (
-  <Text ml={3}>{children}</Text>
+  <Text color="gray.500" ml={3}>{children}</Text>
 )
 
 const UpstreamURL = ({ children }) => (
-  <Link href={children} ml={3} overflow="hidden" textOverflow="ellipsis" fontWeight="bold" color="primary.500">
+  <Link href={children} ml={5} overflow="hidden" textOverflow="ellipsis" fontWeight="bold" color="primary.500">
     {children.replace(/^https?:\/\//, '')}
   </Link>
 )

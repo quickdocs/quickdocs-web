@@ -4,7 +4,9 @@ import Logo from '../atoms/Logo'
 import SearchBar from './SearchBar'
 
 const ServiceLogo = () => (
-  <Logo fontSize={'180%'} />
+  <Box color="white" fontSize="180%">
+    <Logo display="inline" /> &beta;
+  </Box>
 )
 
 const GlobalHeader = ({ searchBar }) => (

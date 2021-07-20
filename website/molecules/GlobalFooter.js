@@ -11,7 +11,6 @@ const GlobalFooter = (props) => (
   <footer>
     <Wrap py={50} mt={50} justify="center" spacing={10} {...styles}>
       <WrapItem><Link href="https://github.com/quickdocs">GitHub @quickdocs</Link></WrapItem>
-      <WrapItem><Link>Sponsors</Link></WrapItem>
     </Wrap>
   </footer>
 )
