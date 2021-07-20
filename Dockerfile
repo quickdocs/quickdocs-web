@@ -1,9 +1,10 @@
-FROM nginx
-ENV NGINX_PORT 80
-ENV WEB_HOST quickdocs.org
-ENV API_HOST api.quickdocs.org
+FROM node:14-alpine
 
-EXPOSE $NGINX_PORT
+WORKDIR /app
 
-COPY nginx/templates /etc/nginx/templates
-COPY static /usr/share/nginx/html
+COPY website /app
+RUN npm install && npm run build
+
+EXPOSE 3000
+ENTRYPOINT ["npm", "run"]
+CMD ["start"]
