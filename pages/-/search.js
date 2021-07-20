@@ -16,8 +16,8 @@ const Version = ({ children }) => (
   <Text color="gray.500" ml={3}>{children}</Text>
 )
 
-const UpstreamURL = ({ children }) => (
-  <Link href={children} ml={5} overflow="hidden" textOverflow="ellipsis" fontWeight="bold" color="primary.500">
+const UpstreamURL = ({ children, ...props }) => (
+  <Link href={children} ml={5} overflow="hidden" textOverflow="ellipsis" fontWeight="bold" color="primary.500" {...props}>
     {children.replace(/^https?:\/\//, '')}
   </Link>
 )
@@ -45,7 +45,7 @@ export default function Search({ keyword, projects = [] }) {
                   <Flex whiteSpace="nowrap" align="center">
                     <ProjectName>{project.name}</ProjectName>
                     <Version>{project.dist_version}</Version>
-                    <UpstreamURL>{project.upstream_url}</UpstreamURL>
+                    <UpstreamURL display={['none', 'none', 'inline']}>{project.upstream_url}</UpstreamURL>
                   </Flex>
                   <Description>{project.description}</Description>
                 </Flex>

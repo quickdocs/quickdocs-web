@@ -6,6 +6,8 @@ const styles = {
   color: '#fff',
 }
 
-const Logo = (props) => <Text {...styles} {...props}>Quickdocs</Text>
+const Logo = ({ minimum, ...props}) => (
+  <Text {...styles} {...props}>{minimum ? 'Q' : 'Quickdocs'}</Text>
+)
 
 export default Logo

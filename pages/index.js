@@ -11,28 +11,28 @@ const SearchSection = () => (
     <Grid templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(4, 1fr)"]}
           gap={4} my={5, 5, 5, 25}>
       <NextLink href="/-/search?q=web" passHref>
-        <Link><CategoryButton>Web development</CategoryButton></Link>
+        <CategoryButton>Web development</CategoryButton>
       </NextLink>
       <NextLink href="/-/search?q=graphics" passHref>
-        <Link><CategoryButton>Graphics</CategoryButton></Link>
+        <CategoryButton>Graphics</CategoryButton>
       </NextLink>
       <NextLink href="/-/search?q=GUI" passHref>
-        <Link><CategoryButton>GUI</CategoryButton></Link>
+        <CategoryButton>GUI</CategoryButton>
       </NextLink>
       <NextLink href="/-/search?q=system+programming" passHref>
-        <Link><CategoryButton>System & Low-level</CategoryButton></Link>
+        <CategoryButton>System & Low-level</CategoryButton>
       </NextLink>
       <NextLink href="/-/search?q=test" passHref>
-        <Link><CategoryButton>Testing framework</CategoryButton></Link>
+        <CategoryButton>Testing framework</CategoryButton>
       </NextLink>
       <NextLink href="/-/search?q=database" passHref>
-        <Link><CategoryButton>Database</CategoryButton></Link>
+        <CategoryButton>Database</CategoryButton>
       </NextLink>
       <NextLink href="/-/search?q=utilities" passHref>
-        <Link><CategoryButton>Utility Collection</CategoryButton></Link>
+        <CategoryButton>Utility Collection</CategoryButton>
       </NextLink>
       <NextLink href="/-/search?q=concurrency" passHref>
-        <Link><CategoryButton>Concurrency</CategoryButton></Link>
+        <CategoryButton>Concurrency</CategoryButton>
       </NextLink>
     </Grid>
   </Flex>
