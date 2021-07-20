@@ -6,7 +6,7 @@ import DefaultLayout from '../layouts/DefaultLayout'
 
 const SearchSection = () => (
   <Flex direction="column">
-    <Heading size="lg" as="h2" align="center" my={[4, 4, 4, 6]}>Find Common Lisp libraries <Text display={[null, null, null, 'inline']}>shipped by Quicklisp</Text></Heading>
+    <Heading size="lg" as="h2" align="center" my={[3, 3, 4, 6]}>Find Common Lisp libraries <Text display={[null, null, null, 'inline']}>shipped by Quicklisp</Text></Heading>
     <SearchBar my={[5, 5, 5, 15]} />
     <Grid templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(4, 1fr)"]}
           gap={4} my={5, 5, 5, 25}>

@@ -4,14 +4,14 @@ import Logo from '../atoms/Logo'
 import SearchBar from './SearchBar'
 
 const ServiceLogo = () => (
-  <Box color="white" fontSize="180%">
+  <Box color="white" fontSize={["150%", "150%", "180%"]}>
     <Logo display="inline" /> &beta;
   </Box>
 )
 
 const GlobalHeader = ({ searchBar }) => (
   <Flex bg="brand" align="center">
-    <Box px={6} py={3}>
+    <Box px={6} py={[2, 2, 3]}>
       <Link href="/" passHref><a><ServiceLogo /></a></Link>
     </Box>
     <Spacer />
