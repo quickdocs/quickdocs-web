@@ -2,7 +2,7 @@ import { Wrap, WrapItem, Link, Text } from '@chakra-ui/react'
 
 const styles = {
   color: 'primary.100',
-  bgColor: 'primary.900',
+  bgColor: 'brand',
   align: 'left',
   fontWeight: 'bold',
 }

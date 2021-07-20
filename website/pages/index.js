@@ -1,36 +1,53 @@
-import Head from 'next/head'
+import NextLink from 'next/link'
 import { Flex, Box, Grid, SimpleGrid, Heading, VStack, Wrap, WrapItem, Text, Link } from '@chakra-ui/react'
-import GlobalHeader from '../molecules/GlobalHeader'
-import GlobalFooter from '../molecules/GlobalFooter'
 import SearchBar from '../molecules/SearchBar'
 import CategoryButton from '../molecules/CategoryButton'
-import styles from '../styles/Home.module.css'
+import DefaultLayout from '../layouts/DefaultLayout'
 
 const SearchSection = () => (
-  <Flex direction="column" px={[10, 10, 10, 20]} py={[5, 5, 5, 15]}>
+  <Flex direction="column">
+    <Heading size="lg" as="h2" align="center" my={[4, 4, 4, 6]}>Discover Common Lisp libraries in Quicklisp</Heading>
     <SearchBar my={[5, 5, 5, 15]} />
     <Grid templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(4, 1fr)"]}
           gap={4} my={5, 5, 5, 25}>
-      <CategoryButton>Web development</CategoryButton>
-      <CategoryButton>Graphics</CategoryButton>
-      <CategoryButton>GUI</CategoryButton>
-      <CategoryButton>System & Low-level</CategoryButton>
-      <CategoryButton>Testing framework</CategoryButton>
-      <CategoryButton>Database</CategoryButton>
-      <CategoryButton>Utility Collection</CategoryButton>
-      <CategoryButton>Concurrency</CategoryButton>
+      <NextLink href="/search?q=web" passHref>
+        <CategoryButton>Web development</CategoryButton>
+      </NextLink>
+      <NextLink href="/search?q=graphics" passHref>
+        <CategoryButton>Graphics</CategoryButton>
+      </NextLink>
+      <NextLink href="/search?q=GUI" passHref>
+        <CategoryButton>GUI</CategoryButton>
+      </NextLink>
+      <NextLink href="/search?q=system+programming" passHref>
+        <CategoryButton>System & Low-level</CategoryButton>
+      </NextLink>
+      <NextLink href="/search?q=test" passHref>
+        <CategoryButton>Testing framework</CategoryButton>
+      </NextLink>
+      <NextLink href="/search?q=database" passHref>
+        <CategoryButton>Database</CategoryButton>
+      </NextLink>
+      <NextLink href="/search?q=utilities" passHref>
+        <CategoryButton>Utility Collection</CategoryButton>
+      </NextLink>
+      <NextLink href="/search?q=concurrency" passHref>
+        <CategoryButton>Concurrency</CategoryButton>
+      </NextLink>
     </Grid>
   </Flex>
 )
 
 const NewProjectsSection = ({ projects }) => (
   <Box>
-    <Heading size="md" mb="20px">Newly added projects</Heading>
+    <Heading size="md" my="20px">Newly added projects</Heading>
     <VStack spacing={4} align="stretch" py={2}>
       {projects.map(project => (
-        <Box minH="40px" key={`new_project_${project.name}`}>
-          <Link fontWeight="bold" color="gray.700">{project.name}</Link>
-          <Text color="gray.500">{project.description}</Text>
+        <Box key={`new_project_${project.name}`}>
+          <NextLink href={`/${encodeURIComponent(project.name)}`} passHref>
+            <Link fontWeight="bold" color="gray.700">{project.name}</Link>
+          </NextLink>
+          <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" color="gray.500">{project.description}</Text>
         </Box>
       ))}
     </VStack>
@@ -39,11 +56,13 @@ const NewProjectsSection = ({ projects }) => (
 
 const UpdatedProjectsSection = ({ projects }) => (
   <Box>
-    <Heading size="md" mb="20px">Updated projects</Heading>
+    <Heading size="md" my="20px">Updated projects</Heading>
     <Wrap py={2}>
       {projects.map(project => (
         <WrapItem key={`updated_project_${project.name}`}>
-          <Link fontWeight="bold" color="gray.700">{project.name}</Link>
+          <NextLink href={`/${encodeURIComponent(project.name)}`} passHref>
+            <Link fontWeight="bold" color="gray.700">{project.name}</Link>
+          </NextLink>
         </WrapItem>
       ))}
     </Wrap>
@@ -52,24 +71,15 @@ const UpdatedProjectsSection = ({ projects }) => (
 
 export default function Home({ newProjects, updatedProjects }) {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Quickdocs</title>
-        <meta name="description" content="Documentation Hosting for Common Lisp" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <GlobalHeader />
-        <SearchSection />
-        <SimpleGrid columns={[1, 1, 1, 2]} spacing={10} px={[10, 10, 10, 20]}>
-          <NewProjectsSection projects={newProjects} />
-          <UpdatedProjectsSection projects={updatedProjects} />
-        </SimpleGrid>
-      </main>
-
-      <GlobalFooter />
-    </div>
+    <DefaultLayout title="Quickdocs"
+                   description="Documentation Hosting for Common Lisp"
+                   globalHeader={{searchBar: false}}>
+      <SearchSection />
+      <SimpleGrid columns={[1, 1, 1, 2]} spacing={10}>
+        <NewProjectsSection projects={newProjects} />
+        <UpdatedProjectsSection projects={updatedProjects} />
+      </SimpleGrid>
+    </DefaultLayout>
   )
 }
 
