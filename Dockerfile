@@ -2,7 +2,7 @@ FROM node:14-alpine
 
 WORKDIR /app
 
-COPY website /app
+COPY . /app
 RUN npm install && npm run build
 
 EXPOSE 3000
