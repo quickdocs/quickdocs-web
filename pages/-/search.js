@@ -4,8 +4,6 @@ import { useRouter } from "next/router"
 import { Heading, Box, Flex, Text, Link } from '@chakra-ui/react'
 import DefaultLayout from '../../layouts/DefaultLayout'
 
-const Container = (props) => <Box my={5} {...props} />
-
 const ProjectName = ({ children }) => (
   <NextLink href={`/${encodeURIComponent(children)}`} passHref>
     <Link fontWeight="bold" fontSize={["xl", "xl", "2xl", "2xl"]} color="gray.700">{children}</Link>
@@ -17,8 +15,8 @@ const Version = ({ children }) => (
 )
 
 const UpstreamURL = ({ children, ...props }) => (
-  <Link href={children} ml={5} overflow="hidden" textOverflow="ellipsis" fontWeight="bold" color="primary.500" {...props}>
-    {children.replace(/^https?:\/\//, '')}
+  <Link href={children} ml={5} overflow="hidden" textOverflow="ellipsis" fontWeight="semibold" color="primary.500" {...props}>
+    {children.replace(/^https?:\/\//, '').replace(/\.git$/, '')}
   </Link>
 )
 
@@ -35,23 +33,28 @@ export default function Search({ keyword, projects = [] }) {
     <DefaultLayout title={`${title} | Quickdocs`}
                    description="Documentation Hosting for Common Lisp"
                    globalHeader={{searchBar: { keyword }}}>
-      <Heading as="h2" size="lg" mt={3}>{title}</Heading>
-      <Container>
-        <Flex direction="column" mt={35}>
-          {projects.length === 0
-            ? (<Box>No projects found</Box>)
-            : projects.map(project => (
-                <Flex key={`project_${project.name}`} direction="column" mb={5}>
-                  <Flex whiteSpace="nowrap" align="center">
-                    <ProjectName>{project.name}</ProjectName>
-                    <Version>{project.dist_version}</Version>
-                    <UpstreamURL display={['none', 'none', 'inline']}>{project.upstream_url}</UpstreamURL>
-                  </Flex>
-                  <Description>{project.description}</Description>
+      <Heading as="h2" size="lg">{title}</Heading>
+      <Flex direction="column" mt={30}>
+        {projects.length === 0
+          ? (<Box>No projects found</Box>)
+          : projects.map(project => (
+              <Flex key={`project_${project.name}`} direction="column" mb={5}>
+                <Flex whiteSpace="nowrap" align="center">
+                  <ProjectName>{project.name}</ProjectName>
+                  <Version>{project.dist_version}</Version>
+                  <UpstreamURL display={['none', 'none', 'inline']}>{project.upstream_url}</UpstreamURL>
                 </Flex>
-              ))}
-        </Flex>
-      </Container>
+                <Description>{project.description}</Description>
+              </Flex>
+            ))}
+      </Flex>
+      {keyword && keyword.length !== 0 && (
+        <Box mt={5}>
+          <Link href={`https://github.com/search?l=Common+Lisp&q=${encodeURIComponent(keyword)}&type=Repositories`}
+                fontWeight="semibold" color="primary.500">
+            Search other &quot;{keyword}&quot; projects on GitHub
+          </Link>
+        </Box>)}
     </DefaultLayout>
   )
 }

@@ -21,7 +21,7 @@ const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses })
       <Heading as="h3" size="md" mb={2}>Upstream URL</Heading>
       <Box>
         <NextLink href={upstreamUrl} passHref>
-          <Link fontWeight="bold" color="primary.500">{upstreamUrl.replace(/^https?:\/\//, '')}</Link>
+          <Link fontWeight="semibold" color="primary.500">{upstreamUrl.replace(/^https?:\/\//, '').replace(/\.git$/, '')}</Link>
         </NextLink>
       </Box>
     </GridItem>
@@ -44,13 +44,13 @@ export default function Project(project) {
   const { name, dist_version, description, upstream_url, authors, maintainers, licenses, depends_on, required_by } = project
   return (
     <DefaultLayout title={`${name} | Quickdocs`}
-                   description="Documentation Hosting for Common Lisp">
+                   description={description}>
       <SimpleGrid columns={[1, 1, 1, 10]} w="100%" gap={5}>
         <GridItem colSpan={[1, 1, 1, 10]}>
           <ProjectHeader name={name} distVersion={dist_version} />
         </GridItem>
         <GridItem colSpan={[1, 1, 1, 7]}>
-          <ProjectDescriptionSection description={description} />
+          <ProjectDescriptionSection description={description || 'No Description'} />
         </GridItem>
         <GridItem colSpan={[1, 1, 1, 3]} mt={[5, null, null, 0]}>
           <ProjectMetadataSection upstreamUrl={upstream_url} authors={authors} maintainers={maintainers} licenses={licenses} />

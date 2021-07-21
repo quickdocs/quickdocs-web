@@ -8,7 +8,7 @@ import {
   Button
 } from '@chakra-ui/react'
 
-const SearchBar = ({ keyword, ...props }) => {
+const SearchBar = ({ keyword, border, ...props }) => {
   const [query, setQuery] = useState(keyword)
   const router = useRouter()
   const handleChange = (event) => setQuery(event.target.value)
@@ -21,7 +21,7 @@ const SearchBar = ({ keyword, ...props }) => {
     <form onSubmit={handleSubmit}>
       <Flex {...props}>
         <InputGroup>
-          <Input variant="filled" placeholder="Search projects" h={props.h || 50} _focus={{ bgColor: 'white' }} borderColor="primary.300" borderRight={0} value={query} onChange={handleChange} />
+          <Input variant="filled" placeholder="Search projects" border={border} h={props.h || 50} _focus={{ bgColor: 'white' }} borderColor="primary.300" borderRight={0} value={query} onChange={handleChange} />
           <InputRightAddon p={0} h={props.h || 50} border="none">
             <Button type="submit" borderLeftRadius={0} bgColor={'primary.500'} _hover={{ bg: 'primary.600' }} _active={{ bg: 'primary.700' }} color={'white'} h={props.h || 50}>Search</Button>
           </InputRightAddon>

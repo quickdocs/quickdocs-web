@@ -16,7 +16,7 @@ const GlobalHeader = ({ searchBar }) => (
       <Link href="/" passHref><a><ServiceLogo searchBar={searchBar} /></a></Link>
     </Box>
     <Spacer />
-    {searchBar && <SearchBar mr={5} h={[42, 42, 50]} {...searchBar} />}
+    {searchBar && <SearchBar mr={5} h={[42, 42, 50]} border="none" {...searchBar} />}
   </Flex>
 )
 
