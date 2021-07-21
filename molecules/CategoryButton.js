@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import { Link } from '@chakra-ui/react'
 
 const styles = {
@@ -16,8 +17,10 @@ const styles = {
   _active: { bg: 'brand', color: '#fff' },
 }
 
-const CategoryButton = ({ children, ...props }) => (
-  <Link {...styles} {...props}>{children}</Link>
-)
+const CategoryButton = forwardRef(({ children, ...props }, ref) => (
+  <Link ref={ref} {...styles} {...props}>{children}</Link>
+))
+
+CategoryButton.displayName = 'CategoryButton'
 
 export default CategoryButton
