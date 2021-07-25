@@ -3,6 +3,7 @@ import { Heading, Flex, Box, Grid, GridItem, SimpleGrid, Wrap, WrapItem, Text, L
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
+import org from 'org'
 import DefaultLayout from '../layouts/DefaultLayout'
 
 const ProjectHeader = ({ name, distVersion }) => (
@@ -21,6 +22,20 @@ const Readme = ({ filename, content }) => {
       <Box className="readme-inner">
         <Text fontWeight="semibold">{filename}</Text>
         <ReactMarkdown remarkPlugins={[gfm]} rehypePlugins={[rehypeRaw]} disallowedElements={['script', 'iframe', 'link', 'style', 'embed', 'applet']}>{content}</ReactMarkdown>
+      </Box>
+    )
+  }
+  else if (filename.match(/\.org$/)) {
+    const parser = new org.Parser()
+    const orgDocument = parser.parse(content)
+    const orgDocumentConverted = orgDocument.convert(org.ConverterHTML, { headerOffset: 0, suppressAutoLink: true })
+    const readmeOrgHTML = orgDocumentConverted.title !== 'Untitled'
+      ? orgDocumentConverted.title + orgDocumentConverted.contentHTML
+      : orgDocumentConverted.contentHTML
+    return (
+      <Box className="readme-inner">
+        <Text fontWeight="semibold">{filename}</Text>
+        <Box className="readme-org" dangerouslySetInnerHTML={{__html: readmeOrgHTML}} />
       </Box>
     )
   }
