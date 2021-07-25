@@ -7,8 +7,8 @@ import DefaultLayout from '../layouts/DefaultLayout'
 
 const ProjectHeader = ({ name, distVersion }) => (
   <Flex align="center">
-    <Heading>{name}</Heading>
-    <Text fontSize="lg" color="gray.500" ml={5}>{distVersion}</Text>
+    <Heading size="lg">{name}</Heading>
+    <Text size="lg" color="gray.500" ml={[3, 3, 3, 5]} whiteSpace="nowrap">{distVersion}</Text>
   </Flex>
 )
 
