@@ -18,17 +18,17 @@ const Readme = ({ filename, content }) => {
   }
   else if (filename.match(/\.(markdown|md)/)) {
     return (
-      <Text className="readme">
+      <Box className="readme-inner">
         <Text fontWeight="semibold">{filename}</Text>
         <ReactMarkdown remarkPlugins={[gfm]} rehypePlugins={[rehypeRaw]} disallowedElements={['script', 'iframe', 'link', 'style', 'embed', 'applet']}>{content}</ReactMarkdown>
-      </Text>
+      </Box>
     )
   }
   return (
-    <Text className="readme" whiteSpace="pre-wrap">
+    <Box className="readme-inner" whiteSpace="pre-wrap">
       <Text fontWeight="semibold">{filename}</Text>
       {content}
-    </Text>
+    </Box>
   )
 }
 
@@ -39,7 +39,11 @@ const ProjectDescriptionSection = ({ description }) => (
 )
 
 const ProjectReadmeSection = ({ readme, ...props }) => (
-  readme && <Box overflow="hidden" {...props}><Readme filename={readme.filename} content={readme.content} /></Box>
+  readme && (
+    <Box className="readme" px="25px" py="15px" mx={["-25px", "-25px", 0]} {...props}>
+      <Readme filename={readme.filename} content={readme.content} />
+    </Box>
+  )
 )
 
 const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses, ...props }) => (
