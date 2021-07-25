@@ -20,7 +20,7 @@ const Readme = ({ filename, content }) => {
     return (
       <Text className="readme">
         <Text fontWeight="semibold">{filename}</Text>
-        <ReactMarkdown remarkPlugins={[gfm]} rehypePlugins={[rehypeRaw]} disallowedElements={['script', 'iframe', 'link', 'style', 'embed', 'applet']} children={content} />
+        <ReactMarkdown remarkPlugins={[gfm]} rehypePlugins={[rehypeRaw]} disallowedElements={['script', 'iframe', 'link', 'style', 'embed', 'applet']}>{content}</ReactMarkdown>
       </Text>
     )
   }
