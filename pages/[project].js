@@ -27,7 +27,7 @@ const Readme = ({ filename, content }) => {
   return (
     <Text className="readme" whiteSpace="pre-wrap">
       <Text fontWeight="semibold">{filename}</Text>
-      {children}
+      {content}
     </Text>
   )
 }
