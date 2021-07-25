@@ -1,5 +1,8 @@
 import NextLink from 'next/link'
 import { Heading, Flex, Box, Grid, GridItem, SimpleGrid, Wrap, WrapItem, Text, Link } from '@chakra-ui/react'
+import ReactMarkdown from 'react-markdown'
+import gfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 import DefaultLayout from '../layouts/DefaultLayout'
 
 const ProjectHeader = ({ name, distVersion }) => (
@@ -9,14 +12,38 @@ const ProjectHeader = ({ name, distVersion }) => (
   </Flex>
 )
 
+const Readme = ({ filename, content }) => {
+  if (!filename) {
+    return null;
+  }
+  else if (filename.match(/\.(markdown|md)/)) {
+    return (
+      <Text className="readme">
+        <Text fontWeight="semibold">{filename}</Text>
+        <ReactMarkdown remarkPlugins={[gfm]} rehypePlugins={[rehypeRaw]} disallowedElements={['script', 'iframe', 'link', 'style', 'embed', 'applet']} children={content} />
+      </Text>
+    )
+  }
+  return (
+    <Text className="readme" whiteSpace="pre-wrap">
+      <Text fontWeight="semibold">{filename}</Text>
+      {children}
+    </Text>
+  )
+}
+
 const ProjectDescriptionSection = ({ description }) => (
   <Box>
     <Text whiteSpace="pre-line">{description}</Text>
   </Box>
 )
 
-const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses }) => (
-  <SimpleGrid columns={1} gap={10}>
+const ProjectReadmeSection = ({ readme, ...props }) => (
+  readme && <Box overflow="hidden" {...props}><Readme filename={readme.filename} content={readme.content} /></Box>
+)
+
+const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses, ...props }) => (
+  <SimpleGrid columns={[1, 2, 2, 1]} gap={[5, 5, 5, 10]} alignContent="start" {...props}>
     <GridItem>
       <Heading as="h3" size="md" mb={2}>Upstream URL</Heading>
       <Box>
@@ -41,19 +68,21 @@ const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses })
 )
 
 export default function Project(project) {
-  const { name, dist_version, description, upstream_url, authors, maintainers, licenses, depends_on, required_by } = project
+  const { name, dist_version, description, upstream_url, authors, maintainers, licenses, depends_on, required_by, readme } = project
   return (
-    <DefaultLayout title={`${name} | Quickdocs`}
-                   description={description}>
-      <SimpleGrid columns={[1, 1, 1, 10]} w="100%" gap={5}>
+    <DefaultLayout title={`${name} | Quickdocs`} description={description}>
+      <SimpleGrid columns={[1, 1, 1, 10]} rowGap={5} columnGap={10}>
         <GridItem colSpan={[1, 1, 1, 10]}>
           <ProjectHeader name={name} distVersion={dist_version} />
         </GridItem>
         <GridItem colSpan={[1, 1, 1, 7]}>
           <ProjectDescriptionSection description={description || 'No Description'} />
         </GridItem>
-        <GridItem colSpan={[1, 1, 1, 3]} mt={[5, null, null, 0]}>
+        <GridItem colSpan={[1, 1, 1, 3]} rowSpan={[1, 1, 1, 2]}>
           <ProjectMetadataSection upstreamUrl={upstream_url} authors={authors} maintainers={maintainers} licenses={licenses} />
+        </GridItem>
+        <GridItem colSpan={[1, 1, 1, 7]}>
+          <ProjectReadmeSection readme={readme} />
         </GridItem>
       </SimpleGrid>
 

@@ -11,6 +11,82 @@ a {
   text-decoration: none;
 }
 
+.readme {
+  padding: 15px 25px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+.readme ul, .readme ol {
+  padding-left: 2em;
+}
+
+.readme li + li {
+  margin-top: 0.25em;
+}
+
+.readme > * {
+  margin-bottom: 15px;
+}
+
+.readme img {
+  display: inline;
+}
+
+.readme h1 {
+  font-size: 2em;
+  border-bottom: 1px solid #eee;
+}
+
+.readme h2 {
+  font-size: 1.5em;
+  border-bottom: 1px solid #eee;
+}
+
+.readme h3 {
+  font-size: 1.25em;
+}
+
+.readme h4 {
+  font-size: 1em;
+}
+
+.readme h5 {
+  font-size: 0.875em;
+}
+
+.readme h1, .readme h2, .readme h3, .readme h4, .readme h5 {
+  font-weight: 600;
+  line-height: 1.25em;
+}
+
+.readme code, .readme pre {
+  background-color: #eee;
+  border-radius: 4px;
+  padding: 3px;
+}
+
+.readme code {
+  font-size: 90%;
+}
+
+.readme pre {
+  padding: 16px;
+  overflow: hidden;
+  overflow-x: scroll;
+}
+
+.readme pre code {
+  display: block;
+}
+
+.readme table td, .readme table th {
+  border: 1px solid #eee;
+  padding: 6px 13px;
+}
+
 * {
   box-sizing: border-box;
 }
