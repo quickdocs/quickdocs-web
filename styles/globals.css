@@ -22,6 +22,11 @@ a {
   padding-left: 2em;
 }
 
+.readme ul, .readme ol, .readme dl {
+  margin-bottom: 16px;
+  margin-top: 0;
+}
+
 .readme li + li {
   margin-top: 0.25em;
 }
@@ -61,6 +66,10 @@ a {
   line-height: 1.25em;
 }
 
+.readme h1, .readme h2 {
+  padding-bottom: 0.3em;
+}
+
 .readme code, .readme pre {
   background-color: #eee;
   border-radius: 4px;
@@ -75,6 +84,7 @@ a {
   padding: 16px;
   overflow: hidden;
   overflow-x: scroll;
+  margin-bottom: 16px;
 }
 
 .readme pre code {
@@ -84,6 +94,14 @@ a {
 .readme table td, .readme table th {
   border: 1px solid #eee;
   padding: 6px 13px;
+}
+
+.readme a {
+  color: var(--chakra-colors-primary-500);
+}
+
+.readme a:hover {
+  text-decoration: underline;
 }
 
 * {
