@@ -3,6 +3,8 @@ import { Heading, Flex, Box, Grid, GridItem, SimpleGrid, Wrap, WrapItem, Text, L
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { materialOceanic as prismStyle } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import org from 'org'
 import DefaultLayout from '../layouts/DefaultLayout'
 
@@ -13,6 +15,24 @@ const ProjectHeader = ({ name, distVersion }) => (
   </Flex>
 )
 
+const components = {
+  code({node, inline, className, children, ...props}) {
+    const match = /language-([\w-]+)/.exec(className || '')
+    const language = match && (match[1] === 'common-lisp' ? 'lisp' : match[1])
+    return !inline && language ? (
+      <SyntaxHighlighter style={prismStyle}
+                         language={language}
+                         customStyle={{padding: 0, borderRadius: '4px'}} {...props}>
+        {String(children).replace(/\n+$/, '')}
+      </SyntaxHighlighter>
+    ) : (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    )
+  }
+}
+
 const Readme = ({ filename, content }) => {
   if (!filename) {
     return null;
@@ -21,7 +41,7 @@ const Readme = ({ filename, content }) => {
     return (
       <Box className="readme-inner">
         <Text fontWeight="semibold">{filename}</Text>
-        <ReactMarkdown remarkPlugins={[gfm]} rehypePlugins={[rehypeRaw]} disallowedElements={['script', 'iframe', 'link', 'style', 'embed', 'applet']}>{content}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[gfm]} rehypePlugins={[rehypeRaw]} disallowedElements={['script', 'iframe', 'link', 'style', 'embed', 'applet']} components={components}>{content}</ReactMarkdown>
       </Box>
     )
   }
