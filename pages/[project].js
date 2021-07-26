@@ -22,7 +22,7 @@ const components = {
     return !inline && language ? (
       <SyntaxHighlighter style={prismStyle}
                          language={language}
-                         customStyle={{padding: 0, borderRadius: '4px'}} {...props}>
+                         customStyle={{padding: 0, margin: 0, borderRadius: '4px'}} {...props}>
         {String(children).replace(/\n+$/, '')}
       </SyntaxHighlighter>
     ) : (

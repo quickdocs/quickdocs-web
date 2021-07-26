@@ -73,8 +73,6 @@ a {
 }
 
 .readme code {
-  background-color: var(--chakra-colors-gray-100);
-  border-radius: 4px;
   padding: 3px;
   font-size: 90%;
 }
@@ -82,6 +80,8 @@ a {
 .readme pre {
   overflow: hidden;
   overflow-x: scroll;
+  background-color: var(--chakra-colors-gray-100);
+  border-radius: 4px;
 }
 
 .readme pre code {
