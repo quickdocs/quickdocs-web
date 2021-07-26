@@ -1,4 +1,5 @@
 import NextLink from 'next/link'
+import ErrorPage from 'next/error'
 import { Heading, Flex, Box, Grid, GridItem, SimpleGrid, Wrap, WrapItem, Text, Link } from '@chakra-ui/react'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
@@ -106,7 +107,11 @@ const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses, .
   </SimpleGrid>
 )
 
-export default function Project(project) {
+export default function Project({ error, ...project }) {
+  if (error) {
+    return <ErrorPage statusCode={error.status} />
+  }
+
   const { name, dist_version, description, upstream_url, authors, maintainers, licenses, depends_on, required_by, readme } = project
   return (
     <DefaultLayout title={`${name} | Quickdocs`} description={description}>
@@ -158,5 +163,13 @@ export default function Project(project) {
 Project.getInitialProps = async (ctx) => {
   const projectName = ctx.query.project
   const res = await fetch(`https://api.quickdocs.org/projects/${encodeURIComponent(projectName)}`)
-  return await res.json()
+  try {
+    const data = await res.json()
+    return data
+  } catch (err) {
+    if (ctx.res) {
+      ctx.res.statusCode = res.status
+    }
+    return { error: { status: res.status, statusText: res.statusText } }
+  }
 }
