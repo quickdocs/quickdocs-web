@@ -2,6 +2,7 @@ import Head from 'next/head'
 import NextLink from 'next/link'
 import { useRouter } from "next/router"
 import { Heading, Box, Flex, Text, Link } from '@chakra-ui/react'
+import UpstreamURL from '../../molecules/UpstreamURL'
 import DefaultLayout from '../../layouts/DefaultLayout'
 
 const ProjectName = ({ children }) => (
@@ -12,12 +13,6 @@ const ProjectName = ({ children }) => (
 
 const Version = ({ children }) => (
   <Text color="gray.500" ml={3}>{children}</Text>
-)
-
-const UpstreamURL = ({ children, ...props }) => (
-  <Link href={children} ml={5} overflow="hidden" textOverflow="ellipsis" fontWeight="semibold" color="primary.500" {...props}>
-    {children.replace(/^https?:\/\//, '').replace(/\.git$/, '')}
-  </Link>
 )
 
 const Description = ({ children }) => (
@@ -42,7 +37,7 @@ export default function Search({ keyword, projects = [] }) {
                 <Flex whiteSpace="nowrap" align="center">
                   <ProjectName>{project.name}</ProjectName>
                   <Version>{project.dist_version}</Version>
-                  <UpstreamURL display={['none', 'none', 'inline']}>{project.upstream_url}</UpstreamURL>
+                  <UpstreamURL display={['none', 'inline']} mx={3}>{project.upstream_url}</UpstreamURL>
                 </Flex>
                 <Description>{project.description}</Description>
               </Flex>
