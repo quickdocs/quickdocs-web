@@ -12,8 +12,6 @@ a {
 }
 
 .readme {
-  border: 1px solid #eee;
-  border-radius: 4px;
   word-wrap: break-word;
   line-height: 1.5;
 }
@@ -64,8 +62,7 @@ a {
 .readme h1, .readme h2, .readme h3, .readme h4, .readme h5, .readme h6 {
   font-weight: 600;
   line-height: 1.25em;
-  margin-bottom: 16px;
-  margin-top: 24px;
+  margin: 16px 0;
 }
 
 .readme h1, .readme h2 {

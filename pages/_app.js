@@ -16,6 +16,9 @@ const theme = extendTheme({
       800: '#13223a',
       900: '#030b19',
     },
+    secondary: {
+      300: '#f67152',
+    },
   },
   styles: {
     global: {

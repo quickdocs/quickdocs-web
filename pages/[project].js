@@ -1,6 +1,7 @@
 import NextLink from 'next/link'
 import ErrorPage from 'next/error'
 import { Heading, Flex, Box, Grid, GridItem, SimpleGrid, Wrap, WrapItem, Text, Link } from '@chakra-ui/react'
+import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
@@ -8,6 +9,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { materialOceanic as prismStyle } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import org from 'org'
 import DefaultLayout from '../layouts/DefaultLayout'
+import { TabSwitch, Tab } from '../molecules/TabSwitch'
 
 const ProjectHeader = ({ name, distVersion }) => (
   <Flex align="center">
@@ -41,7 +43,6 @@ const Readme = ({ filename, content }) => {
   else if (filename.match(/\.(markdown|md)/)) {
     return (
       <Box className="readme-inner">
-        <Text fontWeight="semibold">{filename}</Text>
         <ReactMarkdown remarkPlugins={[gfm]} rehypePlugins={[rehypeRaw]} disallowedElements={['script', 'iframe', 'link', 'style', 'embed', 'applet']} components={components}>{content}</ReactMarkdown>
       </Box>
     )
@@ -55,14 +56,12 @@ const Readme = ({ filename, content }) => {
       : orgDocumentConverted.contentHTML
     return (
       <Box className="readme-inner">
-        <Text fontWeight="semibold">{filename}</Text>
         <Box className="readme-org" dangerouslySetInnerHTML={{__html: readmeOrgHTML}} />
       </Box>
     )
   }
   return (
     <Box className="readme-inner" whiteSpace="pre-wrap">
-      <Text fontWeight="semibold">{filename}</Text>
       {content}
     </Box>
   )
@@ -76,10 +75,14 @@ const ProjectDescriptionSection = ({ description }) => (
 
 const ProjectReadmeSection = ({ readme, ...props }) => (
   readme && (
-    <Box className="readme" px="25px" py="15px" mx={["-25px", "-25px", 0]} {...props}>
-      <Readme filename={readme.filename} content={readme.content} />
+    <Box className="readme" {...props}>
+      <Readme {...readme} />
     </Box>
   )
+)
+
+const ProjectSystemsSection = ({ ...props }) => (
+  <Box px="25px">TODO</Box>
 )
 
 const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses, ...props }) => (
@@ -108,6 +111,8 @@ const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses, .
 )
 
 export default function Project({ error, ...project }) {
+  const [currentTab, setCurrentTab] = useState('readme')
+
   if (error) {
     return <ErrorPage statusCode={error.status} />
   }
@@ -115,7 +120,7 @@ export default function Project({ error, ...project }) {
   const { name, dist_version, description, upstream_url, authors, maintainers, licenses, depends_on, required_by, readme } = project
   return (
     <DefaultLayout title={`${name} | Quickdocs`} description={description}>
-      <SimpleGrid columns={[1, 1, 1, 10]} rowGap={5} columnGap={10}>
+      <SimpleGrid columns={[1, 1, 1, 10]} rowGap={5} columnGap={10} templateRows="min-content minmax(0, auto)">
         <GridItem colSpan={[1, 1, 1, 10]}>
           <ProjectHeader name={name} distVersion={dist_version} />
         </GridItem>
@@ -126,7 +131,15 @@ export default function Project({ error, ...project }) {
           <ProjectMetadataSection upstreamUrl={upstream_url} authors={authors} maintainers={maintainers} licenses={licenses} />
         </GridItem>
         <GridItem colSpan={[1, 1, 1, 7]}>
-          <ProjectReadmeSection readme={readme} />
+          <TabSwitch>
+            <Tab onClick={() => setCurrentTab('readme')}>README</Tab>
+            <Tab onClick={() => setCurrentTab('systems')}>Provided Systems</Tab>
+          </TabSwitch>
+          <Box py="15px" mx={["-25px", "-25px", 0]}>
+            {currentTab === 'readme'
+              ? <ProjectReadmeSection readme={readme} />
+              : <ProjectSystemsSection />}
+          </Box>
         </GridItem>
       </SimpleGrid>
 
