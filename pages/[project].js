@@ -1,5 +1,6 @@
 import NextLink from 'next/link'
 import ErrorPage from 'next/error'
+import { useRouter } from 'next/router'
 import { Heading, Flex, Box, Grid, GridItem, SimpleGrid, Wrap, WrapItem, Text, Link } from '@chakra-ui/react'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -81,9 +82,9 @@ const ProjectReadmeSection = ({ readme, ...props }) => (
   )
 )
 
-const ProjectSystemsSection = ({ ...props }) => (
-  <Box px="25px">TODO</Box>
-)
+const ProjectSystemsSection = ({ providedSystems, ...props }) => {
+  return <Box px="25px">{providedSystems.map(system => system.name).join(', ')}</Box>
+}
 
 const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses, ...props }) => (
   <SimpleGrid columns={[1, 2, 2, 1]} gap={[5, 5, 5, 10]} alignContent="start" {...props}>
@@ -110,14 +111,22 @@ const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses, .
   </SimpleGrid>
 )
 
-export default function Project({ error, ...project }) {
-  const [currentTab, setCurrentTab] = useState('readme')
+export default function Project({ error, project, tab }) {
+  const router = useRouter()
+  const { name, dist_version, description, upstream_url, authors, maintainers, licenses, depends_on, required_by, readme, systems } = project
+  const [providedSystems, setProvidedSystems] = useState(systems || [])
 
   if (error) {
     return <ErrorPage statusCode={error.status} />
   }
 
-  const { name, dist_version, description, upstream_url, authors, maintainers, licenses, depends_on, required_by, readme } = project
+  const onChangeTab = tab => {
+    router.push({
+      pathname: '/[project]',
+      query: { project: name, tab }
+    }, tab === 'readme' ? `/${encodeURIComponent(name)}` : null, { scroll: false })
+  }
+
   return (
     <DefaultLayout title={`${name} | Quickdocs`} description={description}>
       <SimpleGrid columns={[1, 1, 1, 10]} rowGap={5} columnGap={10} templateRows="min-content minmax(0, auto)">
@@ -131,14 +140,14 @@ export default function Project({ error, ...project }) {
           <ProjectMetadataSection upstreamUrl={upstream_url} authors={authors} maintainers={maintainers} licenses={licenses} />
         </GridItem>
         <GridItem colSpan={[1, 1, 1, 7]}>
-          <TabSwitch>
-            <Tab onClick={() => setCurrentTab('readme')}>README</Tab>
-            <Tab onClick={() => setCurrentTab('systems')}>Provided Systems</Tab>
+          <TabSwitch tab={tab} onChange={onChangeTab}>
+            <Tab name="readme">README</Tab>
+            <Tab name="systems">Provided Systems</Tab>
           </TabSwitch>
           <Box py="15px" mx={["-25px", "-25px", 0]}>
-            {currentTab === 'readme'
+            {tab === 'readme'
               ? <ProjectReadmeSection readme={readme} />
-              : <ProjectSystemsSection />}
+              : <ProjectSystemsSection providedSystems={providedSystems} />}
           </Box>
         </GridItem>
       </SimpleGrid>
@@ -175,10 +184,18 @@ export default function Project({ error, ...project }) {
 
 Project.getInitialProps = async (ctx) => {
   const projectName = ctx.query.project
+  const tab = ctx.query.tab || 'readme'
   const res = await fetch(`https://api.quickdocs.org/projects/${encodeURIComponent(projectName)}`)
+  const resSystems = await fetch(`https://api.quickdocs.org/projects/${encodeURIComponent(projectName)}/systems`)
   try {
     const data = await res.json()
-    return data
+    const systemsData = await resSystems.json()
+    return {
+      project: Object.assign({}, data, {
+        systems: systemsData.systems,
+      }),
+      tab
+    }
   } catch (err) {
     if (ctx.res) {
       ctx.res.statusCode = res.status

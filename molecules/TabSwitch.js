@@ -14,29 +14,31 @@ const containerStyles = {
   borderColor: 'gray.200',
 }
 
-const containerActiveStyles = {
+const itemActiveStyles = {
   borderBottom: '2px',
   borderColor: 'secondary.300',
 }
 
-export const Tab = ({ children, ...rest }) => (
-  <Center {...itemStyles} {...rest}>{children}</Center>
+export const Tab = ({ children, active, ...rest }) => (
+  <Center {...itemStyles} {...(active ? itemActiveStyles : {})} {...rest}>{children}</Center>
 )
 
-const TabContainer = ({ active, children, ...rest }) => (
-  <Box {...containerStyles} {...(active ? containerActiveStyles : {})} {...rest}>{children}</Box>
+const TabContainer = ({ children, ...rest }) => (
+  <Box {...containerStyles} {...rest}>{children}</Box>
 )
 
-export const TabSwitch = ({ children, ...rest }) => {
-  const [activeIndex, setActiveIndex] = useState(0)
-  return (
-    <Flex {...rest}>
-      {React.Children.map(children, (child, i) => (
-        <TabContainer active={i === activeIndex} onClick={() => setActiveIndex(i)}>{child}</TabContainer>
-      ))}
-    </Flex>
-  )
-}
+export const TabSwitch = ({ tab, onChange, children, ...rest }) => (
+  <Flex {...rest}>
+    {React.Children.map(children, (child, i) => (
+      <TabContainer>
+        {React.cloneElement(child, {
+          active: child.props.name === tab,
+          onClick: onChange && (() => onChange(child.props.name))
+        })}
+      </TabContainer>
+    ))}
+  </Flex>
+)
 
 TabSwitch.displayName = 'TabSwitch'
 
