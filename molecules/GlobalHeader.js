@@ -5,7 +5,7 @@ import SearchBar from './SearchBar'
 
 const ServiceLogo = ({ searchBar }) => (
   <Box color="white" fontSize={["150%", "150%", "180%"]}>
-    <Box display={searchBar ? ['none', 'inline'] : 'inline'} whiteSpace="nowrap"><Logo display="inline" minimum={false} /> &beta;</Box>
+    <Box display={searchBar ? ['none', 'inline'] : 'inline'} whiteSpace="nowrap"><Logo display="inline" minimum={false} /></Box>
     <Logo display={searchBar ? ["inline", "none"] : 'none'} minimum={true} />
   </Box>
 )
