@@ -82,9 +82,69 @@ const ProjectReadmeSection = ({ readme, ...props }) => (
   )
 )
 
-const ProjectSystemsSection = ({ providedSystems, ...props }) => {
-  return <Box px="25px">{providedSystems.map(system => system.name).join(', ')}</Box>
-}
+const Dependency = ({name, version, feature}) => (
+  <WrapItem pr={5}>
+    <Text color="gray.700">{name}</Text>
+    {version && <Text ml={2} color="gray.500" whiteSpace="nowrap">version: {version}</Text>}
+    {feature && <Text ml={2} color="gray.500" whiteSpace="nowrap">#+{feature}</Text>}
+  </WrapItem>
+)
+
+const ProjectSystemsSection = ({ providedSystems, ...props }) => (
+  <Box mt={5}>
+    {providedSystems.map(system => (
+      <Flex mb={35} direction={['column', null, null, 'row']} spacing={10} key={`system_${system.name}`}>
+        <Box flex="2" pr={10} pb={6}>
+          <Heading as="h4" size="md" mb={2}>{system.name}</Heading>
+          <Text>{system.description}</Text>
+        </Box>
+        <Box flex="3">
+          <Grid templateColumns="repeat(2, 1fr)" columnGap={2} rowGap={6}>
+            {system.version && <GridItem>
+              <Heading as="h5" size="sm" fontWeight="semibold" color="gray.600" mb={2}>Version:</Heading>
+              {system.version}
+            </GridItem>}
+            {system.license && <GridItem>
+              <Heading as="h5" size="sm" fontWeight="semibold" color="gray.600" mb={2}>License:</Heading>
+              {system.license}
+            </GridItem>}
+            {system.authors && <GridItem colSpan={2}>
+              <Heading as="h5" size="sm" fontWeight="semibold" color="gray.600" mb={2}>Authors:</Heading>
+              {system.authors.join(', ')}
+            </GridItem>}
+            {system.maintainers && <GridItem colSpan={2}>
+              <Heading as="h5" size="sm" fontWeight="semibold" color="gray.600" mb={2}>Maintainers:</Heading>
+              {system.maintainers.join(', ')}
+            </GridItem>}
+            {system.defsystem_depends_on && system.defsystem_depends_on.length !== 0 && (
+              <GridItem colSpan={2}>
+                <Heading as="h5" size="sm" fontWeight="semibold" color="gray.600" mb={3}>Defsystem Dependencies:</Heading>
+                <Wrap>
+                  {system.defsystem_depends_on.map(
+                    s => <Dependency {...s} key={`system_${system.name}_defsystem_depends_on_${s.name}`} />)}
+                </Wrap>
+              </GridItem>)}
+            <GridItem colSpan={2}>
+              <Heading as="h5" size="sm" fontWeight="semibold" color="gray.600" mb={3}>Dependencies:</Heading>
+              <Wrap>
+                {system.depends_on && system.depends_on.length !== 0
+                  ? system.depends_on.map(s => <Dependency {...s} key={`system_${system.name}_depends_on_${s.name}`} />)
+                  : <Text>None</Text>}
+              </Wrap>
+            </GridItem>
+            {system.weakly_depends_on && system.weakly_depends_on.length !== 0 && (
+              <GridItem colSpan={2}>
+                <Heading as="h5" size="sm" fontWeight="semibold" color="gray.600" mb={3}>Weakly Dependencies:</Heading>
+                <Wrap>
+                  {system.weakly_depends_on.map(s => <Dependency {...s} key={`system_${system.name}_weakly_depends_on_${s.name}`} />)}
+                </Wrap>
+              </GridItem>)}
+          </Grid>
+        </Box>
+      </Flex>
+    ))}
+  </Box>
+)
 
 const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses, ...props }) => (
   <SimpleGrid columns={[1, 2, 2, 1]} gap={[5, 5, 5, 10]} alignContent="start" {...props}>
@@ -144,7 +204,7 @@ export default function Project({ error, project, tab }) {
             <Tab name="readme">README</Tab>
             <Tab name="systems">Provided Systems</Tab>
           </TabSwitch>
-          <Box py="15px" mx={["-25px", "-25px", 0]}>
+          <Box py="15px">
             {tab === 'readme'
               ? <ProjectReadmeSection readme={readme} />
               : <ProjectSystemsSection providedSystems={providedSystems} />}
