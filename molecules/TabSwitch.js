@@ -1,5 +1,6 @@
+import NextLink from 'next/link'
 import React, { useState } from 'react'
-import { Flex, Center, Box } from '@chakra-ui/react'
+import { Flex, Center, Box, Link } from '@chakra-ui/react'
 
 const itemStyles = {
   p: '12px',
@@ -19,9 +20,14 @@ const itemActiveStyles = {
   borderColor: 'secondary.300',
 }
 
-export const Tab = ({ children, active, ...rest }) => (
-  <Center {...itemStyles} {...(active ? itemActiveStyles : {})} {...rest}>{children}</Center>
-)
+export const Tab = ({ children, active, href, ...rest }) => {
+  const el = (<Center {...itemStyles} {...(active ? itemActiveStyles : {})} {...rest}>{children}</Center>)
+  return href ? (
+    <NextLink href={href} passHref>
+      <Link style={{textDecoration: "none"}}>{el}</Link>
+    </NextLink>
+  ) : el
+}
 
 const TabContainer = ({ children, ...rest }) => (
   <Box {...containerStyles} {...rest}>{children}</Box>

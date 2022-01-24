@@ -180,13 +180,6 @@ export default function Project({ error, project, tab }) {
     return <ErrorPage statusCode={error.status} />
   }
 
-  const onChangeTab = tab => {
-    router.push({
-      pathname: '/[project]',
-      query: { project: name, tab }
-    }, tab === 'readme' ? `/${encodeURIComponent(name)}` : null, { scroll: false })
-  }
-
   return (
     <DefaultLayout title={`${name} | Quickdocs`} description={description}>
       <SimpleGrid columns={[1, 1, 1, 10]} rowGap={5} columnGap={10} templateRows="min-content minmax(0, auto)">
@@ -200,9 +193,9 @@ export default function Project({ error, project, tab }) {
           <ProjectMetadataSection upstreamUrl={upstream_url} authors={authors} maintainers={maintainers} licenses={licenses} />
         </GridItem>
         <GridItem colSpan={[1, 1, 1, 7]}>
-          <TabSwitch tab={tab} onChange={onChangeTab}>
-            <Tab name="readme">README</Tab>
-            <Tab name="systems">Provided Systems</Tab>
+          <TabSwitch tab={tab}>
+            <Tab name="readme" href={`/${encodeURIComponent(name)}`}>README</Tab>
+            <Tab name="systems" href={`/${encodeURIComponent(name)}?tab=systems`}>Provided Systems</Tab>
           </TabSwitch>
           <Box py="15px">
             {tab === 'readme'
@@ -218,7 +211,7 @@ export default function Project({ error, project, tab }) {
           <Wrap>
             {depends_on.map(name => (
               <WrapItem key={`dependencies_${name}`}>
-                <NextLink href={`/${encodeURIComponent(name)}`}>
+                <NextLink href={`/${encodeURIComponent(name)}`} passHref>
                   <Link fontWeight="bold" color="gray.700">{name}</Link>
                 </NextLink>
               </WrapItem>
