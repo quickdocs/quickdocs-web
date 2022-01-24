@@ -173,7 +173,7 @@ const ProjectMetadataSection = ({ upstreamUrl, authors, maintainers, licenses, .
 
 export default function Project({ error, project, tab }) {
   const router = useRouter()
-  const { name, dist_version, description, upstream_url, authors, maintainers, licenses, depends_on, required_by, readme, systems } = project
+  const { name, dist_version, description, upstream_url, authors, maintainers, licenses, depends_on, required_by, readme, systems } = project || {}
   const [providedSystems, setProvidedSystems] = useState(systems || [])
 
   if (error) {
